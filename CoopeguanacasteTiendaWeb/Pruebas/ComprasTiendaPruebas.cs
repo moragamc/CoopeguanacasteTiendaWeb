@@ -13,45 +13,35 @@ namespace CoopeguanacasteTiendaWeb
     [TestClass]
     public class ComprasTiendaPruebas
     {
-
         private ChromeDriver driver;
         private static string baseURL;
-        //private WebDriverWait espera;
         private PaginaBase paginaBase;
-        //private String currentURL;
+        private PaginaLogin login;
 
         [TestInitialize]
         public void ChromeDriverInitialize()
         {
-            // Initialize
+
             ChromeOptions options = new ChromeOptions
             {
                 PageLoadStrategy = PageLoadStrategy.Normal
             };
             options.AddArgument(@"--incognito");
             driver = new ChromeDriver(options);
-            //baseURL = "https://tienda.coopeguanacaste.com/";
-            // driver.Url = baseURL;
-            //espera = new WebDriverWait(driver, new TimeSpan(0, 0, 30));
-            //driver.Manage().Window.Maximize();
+
             paginaBase = new PaginaBase(driver);
             paginaBase.goToPage();
+
+            login = new PaginaLogin(driver);
         }
         public void InicioSesion()
         {
             driver.FindElement(By.XPath("//div[@id='header-links-opener']/span")).Click();
             paginaBase.goToPage("extend/login");
-            //driver.Navigate().GoToUrl($"{paginaBase.goToPage("extend/login")}extend/login");
-            Thread.Sleep(2);   
-            driver.FindElement(By.Id("Username")).Click();
-            driver.FindElement(By.Id("Username")).Clear();
-            driver.FindElement(By.Id("Username")).SendKeys("504010486");
-            Thread.Sleep(2);   
-            driver.FindElement(By.Id("Password")).Click();
-            driver.FindElement(By.Id("Password")).Clear();
-            driver.FindElement(By.Id("Password")).SendKeys("Cg12.mm94");
-            Thread.Sleep(2);   
-            driver.FindElement(By.CssSelector(".login-button")).Click();
+            Thread.Sleep(2);
+            login.ingresarEmailyPassword("504010486", "Cg12.mm94");
+            Thread.Sleep(2);
+            login.ClickLogin();
             Thread.Sleep(2);
             paginaBase.goToPage();
             paginaBase.EsperaTituloContenga("Tienda Coopeguanacaste");
