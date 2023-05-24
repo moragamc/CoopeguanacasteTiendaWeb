@@ -5,6 +5,6 @@ namespace CoopeguanacasteTiendaWeb.Paginas
 {
     public class DriverHelper
     {
-        public IWebDriver Driver { get; set; }
+        public IWebDriver driver { get; set; }
     }
 }

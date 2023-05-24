@@ -1,19 +1,12 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WebDriverManager.DriverConfigs.Impl;
 
 namespace CoopeguanacasteTiendaWeb.Paginas
 {
-    internal class PaginaBase
+    internal class PaginaBase : DriverHelper
     {
-        private IWebDriver driver;
         protected String urlCoopeguanaste = "https://tienda.coopeguanacaste.com/";
         private WebDriverWait espera;
 
@@ -23,19 +16,9 @@ namespace CoopeguanacasteTiendaWeb.Paginas
             espera = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             driver.Manage().Window.Maximize();
         }
-        public void goToPage(string ext = null)
+        public void IrALaPagina(string ext = null)
         {
             driver.Navigate().GoToUrl(urlCoopeguanaste+ext);
-        }
-
-        public void BuscarElemento(By elemento)
-        {
-            driver.FindElement(elemento);
-        }
-
-        public void BuscarElementos(By elemento)
-        {
-            driver.FindElements(elemento);
         }
 
         public void EsperaTituloContenga(String texto) 
@@ -53,9 +36,15 @@ namespace CoopeguanacasteTiendaWeb.Paginas
             espera.Until(ExpectedConditions.ElementIsVisible(elemento));
         }
 
-        public String getPageTitle()
+        public String ObtenerTituloPagina()
         {
             return driver.Title;
+        }
+
+        public void LimpiarPruebas()
+        {
+             driver.Close();
+             driver.Dispose();
         }
     }
 }
