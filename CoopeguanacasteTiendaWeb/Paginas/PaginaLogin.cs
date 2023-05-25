@@ -5,11 +5,11 @@ namespace CoopeguanacasteTiendaWeb.Paginas
 {
     internal class PaginaLogin : DriverHelper
     {
-        //private PaginaBase paginaBase;
+        private PaginaBase paginaBase;
         public PaginaLogin(IWebDriver driver)
         {
             this.driver = driver;
-            //paginaBase = new PaginaBase(driver);
+            paginaBase = new PaginaBase(driver);
         }
         IWebElement btnMenuPersonal => driver.FindElement(By.XPath("//div[@id='header-links-opener']/span"));
 
@@ -37,9 +37,10 @@ namespace CoopeguanacasteTiendaWeb.Paginas
             txtContrasenna.Click();
             txtContrasenna.Clear();
             txtContrasenna.SendKeys(pass);
-            //lblRecordarme.Click();
+            lblRecordarme.Click();
             btnLogin.Click();
             Thread.Sleep(2);
+            paginaBase.EsperaTituloContenga("Tienda Coopeguanacaste");
         }
         public void CerrarSesion()
         {
