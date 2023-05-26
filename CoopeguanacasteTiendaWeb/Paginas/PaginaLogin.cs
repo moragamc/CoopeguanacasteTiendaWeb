@@ -3,8 +3,9 @@ using System.Threading;
 
 namespace CoopeguanacasteTiendaWeb.Paginas
 {
-    internal class PaginaLogin : DriverHelper
+    internal class PaginaLogin 
     {
+        private IWebDriver driver;
         private PaginaBase paginaBase;
         public PaginaLogin(IWebDriver driver)
         {

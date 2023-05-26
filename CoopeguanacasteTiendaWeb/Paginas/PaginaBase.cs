@@ -5,8 +5,9 @@ using System;
 
 namespace CoopeguanacasteTiendaWeb.Paginas
 {
-    internal class PaginaBase : DriverHelper
+    internal class PaginaBase 
     {
+        private IWebDriver driver;
         protected String urlCoopeguanaste = "https://tienda.coopeguanacaste.com/";
         private WebDriverWait espera;
 

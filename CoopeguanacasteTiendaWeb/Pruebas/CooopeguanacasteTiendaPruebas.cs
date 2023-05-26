@@ -1,54 +1,76 @@
 using CoopeguanacasteTiendaWeb.Paginas;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Threading;
+using NUnit.Framework;
+using OpenQA.Selenium.Edge;
 
 namespace CoopeguanacasteTiendaWeb
 {
-    [TestClass]
-    public class CooopeguanacasteTiendaPruebas : DriverHelper
+    [TestFixture(typeof(ChromeDriver))]
+    [TestFixture(typeof(EdgeDriver))]
+    public class CooopeguanacasteTiendaPruebas<TWebDriver> where TWebDriver : IWebDriver, new()
     {
+        private IWebDriver driver;
         private PaginaBase paginaBase;
         private PaginaLogin login;
         protected String usuario;
         protected String contrasenna;
 
-        [TestInitialize]
+        [SetUp]
         public void Inicializador()
         {
             usuario = "504010486";
-            contrasenna = "Cg12.mm94";
+            contrasenna = "Ge012.mwe94";
 
-            ChromeOptions opcionesDeChrome = new ChromeOptions
+            driver = new TWebDriver();
+/*
+ * Administrar opciones de navegadores
+            if (driver is ChromeDriver)
             {
-                PageLoadStrategy = PageLoadStrategy.Normal
-            };
-            opcionesDeChrome.AddArgument(@"--incognito");
-            driver = new ChromeDriver(opcionesDeChrome);
+                driver.Quit();
+                ChromeOptions opcionesDeChrome = new ChromeOptions
+                {
+                    PageLoadStrategy = PageLoadStrategy.Normal
+                };
+                opcionesDeChrome.AddArgument(@"--incognito");
+                opcionesDeChrome.AddArguments("--test-type");
+                driver = new ChromeDriver(opcionesDeChrome);
+            }
+            else if (driver is EdgeDriver)
+            {
+                driver.Quit();
+                EdgeOptions opcionesDeEdge = new EdgeOptions
+                {
+                    PageLoadStrategy = PageLoadStrategy.Normal
+                };
+                opcionesDeEdge.AddArgument(@"--incognito");
+                opcionesDeEdge.AddArguments("--test-type");
 
+                driver = new EdgeDriver(opcionesDeEdge);
+            }
+*/
             paginaBase = new PaginaBase(driver);
             paginaBase.IrALaPagina();
-
             login = new PaginaLogin(driver);
         }
 
-        [TestMethod]
+        [Test]
         public void VerificarTituloPagina()
         {
             Thread.Sleep(2);   
             Assert.AreEqual("Tienda Coopeguanacaste", paginaBase.ObtenerTituloPagina());
         }
 
-        [TestMethod]
+        [Test]
         public void VerProductosEnElCarrito()
         {
             //Arrange
             login.IngresarEmailyContrasenna(usuario, contrasenna);
-            Thread.Sleep(2);
+            Thread.Sleep(4);
 
             //Act
             driver.FindElement(By.XPath("//a[contains(text(),'Carrito de compras')]")).Click();
@@ -62,7 +84,7 @@ namespace CoopeguanacasteTiendaWeb
             Assert.AreEqual("Carrito de compras. Tienda Coopeguanacaste", paginaBase.ObtenerTituloPagina());
         }
 
-        [TestMethod]
+        [Test]
         public void VerListaDeDeseos()
         {
             //Arrange
@@ -75,7 +97,7 @@ namespace CoopeguanacasteTiendaWeb
             Assert.AreEqual("Lista de Deseos. Tienda Coopeguanacaste", paginaBase.ObtenerTituloPagina());
         }
 
-        [TestMethod]
+        [Test]
         public void BusquedaPorCategoria()
         {
             //Arrange
@@ -98,7 +120,7 @@ namespace CoopeguanacasteTiendaWeb
             Assert.AreEqual("Búsqueda. Tienda Coopeguanacaste", paginaBase.ObtenerTituloPagina());
         }
 
-        [TestMethod]
+        [Test]
         public void AgregarProductosAListaDeDeseos()
         {
             //Arrange
@@ -115,7 +137,7 @@ namespace CoopeguanacasteTiendaWeb
             Assert.AreEqual("Lista de Deseos. Tienda Coopeguanacaste", paginaBase.ObtenerTituloPagina());
         }
 
-        [TestMethod]
+        [Test]
         public void RegistrarClienteExistente()
         {
             //Arrange
@@ -172,7 +194,7 @@ namespace CoopeguanacasteTiendaWeb
             Assert.AreEqual("Ya existe un cliente registrado para este número de cédula", mensajeError);
         }
 
-        [TestMethod]
+        [Test]
         public void IngresoACooopeguanacasteTienda()
         {
             //Arrange
@@ -193,7 +215,7 @@ namespace CoopeguanacasteTiendaWeb
             Assert.AreEqual("Tienda Coopeguanacaste", paginaBase.ObtenerTituloPagina());
         }
 
-        [TestMethod]
+        [Test]
         public void VerificarOpcionContactenos()
         {
             //Act
@@ -216,7 +238,7 @@ namespace CoopeguanacasteTiendaWeb
             Assert.AreEqual("Contáctenos. Tienda Coopeguanacaste", paginaBase.ObtenerTituloPagina());
         }
 
-        [TestMethod]
+        [Test]
         public void VerificarProductosInnovadores()
         {
             //Act
@@ -232,7 +254,7 @@ namespace CoopeguanacasteTiendaWeb
             Assert.AreEqual("Innovadores. Tienda Coopeguanacaste", paginaBase.ObtenerTituloPagina());
         }
 
-        [TestMethod]
+        [Test]
         public void VerificarProductosTecnologicos()
         {
             //Act
@@ -249,7 +271,7 @@ namespace CoopeguanacasteTiendaWeb
         }
 
 
-        [TestMethod]
+        [Test]
         public void VerificarProductosTV_Audio()
         {
             //Act
@@ -265,7 +287,7 @@ namespace CoopeguanacasteTiendaWeb
             Assert.AreEqual("TV & Audio. Tienda Coopeguanacaste", paginaBase.ObtenerTituloPagina());
         }
 
-        [TestMethod]
+        [Test]
         public void VerificarProductosLineaBlanca()
         {
             //Act
@@ -281,7 +303,7 @@ namespace CoopeguanacasteTiendaWeb
             Assert.AreEqual("Línea Blanca. Tienda Coopeguanacaste", paginaBase.ObtenerTituloPagina());
         }
 
-        [TestMethod]
+        [Test]
         public void VerificarProductosPequenosElectrodomesticos()
         {
             //Act
@@ -297,7 +319,7 @@ namespace CoopeguanacasteTiendaWeb
             Assert.AreEqual("Pequeños electrodomésticos. Tienda Coopeguanacaste", paginaBase.ObtenerTituloPagina());
         }
 
-        [TestMethod]
+        [Test]
         public void VerificarProductosEquipoAgricola()
         {
             //Act
@@ -317,7 +339,7 @@ namespace CoopeguanacasteTiendaWeb
             Assert.AreEqual("Equipo Agrícola. Tienda Coopeguanacaste", paginaBase.ObtenerTituloPagina());
         }
 
-        [TestMethod]
+        [Test]
         public void VerificarProductosHerramientasElectricas()
         {
             //Act
@@ -338,7 +360,7 @@ namespace CoopeguanacasteTiendaWeb
             Assert.AreEqual("Herramientas Eléctricas. Tienda Coopeguanacaste", paginaBase.ObtenerTituloPagina());
         }
 
-        [TestMethod]
+        [Test]
         public void VerificarProductosAiresAcondicionados()
         {
             //Act
@@ -359,7 +381,7 @@ namespace CoopeguanacasteTiendaWeb
             Assert.AreEqual("Aires Acondicionados. Tienda Coopeguanacaste", paginaBase.ObtenerTituloPagina());
         }
 
-        [TestMethod]
+        [Test]
         public void VerificarProductosMaterialesElectricos()
         {
             //Act
@@ -380,7 +402,7 @@ namespace CoopeguanacasteTiendaWeb
             Assert.AreEqual("Materiales Eléctricos. Tienda Coopeguanacaste", paginaBase.ObtenerTituloPagina());
         }
 
-        [TestCleanup]
+        [TearDown]
         public void LimpiarClase()
         {
             try
